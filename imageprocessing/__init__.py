@@ -7,6 +7,7 @@ from .imageprocessing import sat_img_collection
 from .imageprocessing import sat_feature_properties
 from .imageprocessing import view_collection_tiles
 from .imageprocessing import min_cloud
+from .imageprocessing import min_cloud_index_list
 from .imageprocessing import sat_preview
 from .imageprocessing import view_band
 from .imageprocessing import transform_bounds
