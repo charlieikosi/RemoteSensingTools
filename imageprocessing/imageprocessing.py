@@ -149,15 +149,23 @@ def view_roi(geopandas_df,label):
 
 def sat_img_collection(date_start, date_end, geojson, sensor_type):
     '''Function that takes date start and end as strings, a geodataframe and the satellite sensor as string input to return a collection of available imagery'''
-    max_cloud_cover = 5
-    cloud_filter = {"eo:cloud_cover": {"lte": max_cloud_cover}}    
-    time_range = date_start+'/'+ date_end
-    client = initialize_client()
-    search = client.search(collections=[sensor_type], 
+    if sensor_type == 'sentinel-2-l2a':
+        max_cloud_cover = 5
+        cloud_filter = {"eo:cloud_cover": {"lte": max_cloud_cover}}    
+        time_range = date_start+'/'+ date_end
+        client = initialize_client()
+        search = client.search(collections=[sensor_type], 
                            intersects=geojson, 
                            datetime=time_range,
                            query=cloud_filter)
-    items = search.get_all_items()
+        items = search.get_all_items()
+    else:
+        time_range = date_start+'/'+ date_end
+        client = initialize_client()
+        search = client.search(collections=[sensor_type], 
+                           intersects=geojson, 
+                           datetime=time_range)
+        items = search.get_all_items()
     return items
 
 def sat_feature_properties(sat_collection, sat_feature_num):
