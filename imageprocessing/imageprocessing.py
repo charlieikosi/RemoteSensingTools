@@ -611,3 +611,16 @@ def polygon_to_bbox(polygon_dict):
             max_y = y
             
     return [min_x, min_y, max_x, max_y]
+
+def convert_to_stackstac(sat_collection,bbox,assets_list):
+    '''Function that takes sat collection, bounding box and the assets as a list into a lazy xarray'''
+    stack = stackstac.stack(sat_collection,
+                            assets = assets_list,
+                            bounds_latlon = bbox,
+                            rescale = False,
+                            chunksize = 2048,
+                            epsg = 4326
+                           )
+    return stack
+
+
