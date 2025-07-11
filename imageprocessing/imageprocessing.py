@@ -623,4 +623,12 @@ def convert_to_stackstac(sat_collection,bbox,assets_list):
                            )
     return stack
 
+def band_normalizer(band):
+    '''Normalizes raw DN to reflectance'''
+    # Calculate min and max values for the band
+    min_val = np.min(band)
+    max_val = np.max(band)
 
+    # Apply Min-Max normalization to the range [0, 1]
+    normalized_band = (band - min_val) / (max_val - min_val)
+    return normalized_band
