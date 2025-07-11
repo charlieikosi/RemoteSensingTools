@@ -342,6 +342,12 @@ def band_img_dask2(band, sat_collection, sat_feature_num):
         dask_band = rioxarray.open_rasterio(band_url).squeeze()
         print(f'{band} layer loaded.')
         return dask_band
+    if band == "vv" or band == "vh":
+        print(f'Accessing {band} polarity.')
+        dask_band = rioxarray.open_rasterio(band_url).squeeze()
+        dask_band = dask_band.fillna(0)
+        print(f'{band} polarity accessed.')
+        return dask_band
     else:
         print(f'Normalizing Band {band}.')
         dask_band = rioxarray.open_rasterio(band_url).squeeze() / 65535
