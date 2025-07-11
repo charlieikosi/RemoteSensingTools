@@ -586,3 +586,28 @@ def plotSCL(scene_classified_layer):
     cbar.ax.set_yticklabels([scl_labels[i] for i in scl_labels])
     plt.title("Sentinel-2 Scene Classification Layer")
     plt.show()
+
+def polygon_to_bbox(polygon_dict):
+    if polygon_dict['type'] != 'Polygon':
+        raise ValueError("Input dictionary must be of type 'Polygon'")
+
+    # Extract all coordinates from the first (exterior) ring
+    # GeoJSON polygons have a list of rings, and each ring is a list of [x, y] coordinates
+    all_coords = polygon_dict['coordinates'][0] # Get the exterior ring
+
+    min_x = float('inf')
+    min_y = float('inf')
+    max_x = float('-inf')
+    max_y = float('-inf')
+
+    for x, y in all_coords:
+        if x < min_x:
+            min_x = x
+        if y < min_y:
+            min_y = y
+        if x > max_x:
+            max_x = x
+        if y > max_y:
+            max_y = y
+            
+    return [min_x, min_y, max_x, max_y]
